@@ -1,0 +1,90 @@
+step 1 . 
+First need to setup all server like
+1.Elastic search
+2.Mongo Db
+3.MYsql
+
+Step 2. Create the Spring boot 2 project
+
+Step 3.
+Set all dependence in porm.xml file 
+1.Elastic search
+2.Mongo Db
+3.MYsql
+4.Actuator
+
+		<!-- My sql setting -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- mongodb setting -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver</artifactId>
+		</dependency>
+		<!-- Elastic setting -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>transport</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-elasticsearch</artifactId>
+		</dependency>
+		<!-- End Elastic setting -->
+		<!-- Actuator --->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		
+
+Step 4 .
+add database details in application.properties file.
+management.endpoints.web.exposure.include=*
+#management.endpoints.web.exposure.include=manish-actuator-endpoint,controler-endpoint,rest-controller-endpoint
+management.endpoint.health.show-details=always
+management.endpoint.shutdown.enabled=true
+
+## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+spring.datasource.url = jdbc:mysql://localhost:3306/myschema
+spring.datasource.username = root
+spring.datasource.password = root
+
+#Elastic search
+spring.data.elasticsearch.repositories.enabled=true
+spring.data.elasticsearch.client.reactive.password=root
+
+#mongodb
+spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=local
+
+## Hibernate Properties
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+
+
+Step 5.
+clean and install mvn
+
+Step 6.
+open browser and use below url
+http://localhost:8080/actuator/health
+
+Step 7.
+Outpul will be...
+{"status":"UP","components":{"db":{"status":"UP","details":{"database":"MySQL","result":1,"validationQuery":"/* ping */ SELECT 1"}},"diskSpace":{"status":"UP","details":{"total":194078830592,"free":111734964224,"threshold":10485760}},"elasticsearchRest":{"status":"UP","details":{"cluster_name":"elasticsearch","status":"yellow","timed_out":false,"number_of_nodes":1,"number_of_data_nodes":1,"active_primary_shards":26,"active_shards":26,"relocating_shards":0,"initializing_shards":0,"unassigned_shards":22,"delayed_unassigned_shards":0,"number_of_pending_tasks":0,"number_of_in_flight_fetch":0,"task_max_waiting_in_queue_millis":0,"active_shards_percent_as_number":54.166666666666664}},"mongo":{"status":"UP","details":{"version":"4.0.9"}},"ping":{"status":"UP"}}}
+
